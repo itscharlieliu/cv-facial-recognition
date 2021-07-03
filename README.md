@@ -1,2 +1,1 @@
-finger-counter
-https://gocv.io/
+# cv-facial-recognition
