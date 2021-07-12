@@ -1,4 +1,6 @@
+import os
 from flask import Flask, render_template, Response
+import time
 
 app = Flask(__name__)
 
@@ -9,12 +11,16 @@ def index():
 def generate_frame():
     while True:
         # Testing
-        with open("test.jpeg", "rb") as image:
+        print(os.listdir())
+
+        with open("src/test.jpeg", "rb") as image:
             f = image.read()
             frame = bytearray(f)
 
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+        time.sleep(1);
 
 
 @app.route('/video_feed')
