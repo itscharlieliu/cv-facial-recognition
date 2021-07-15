@@ -1,5 +1,6 @@
 from utils.numpy_to_img import numpy_to_img
-from webserver import webserver
+from webserver import app, streamer
+
 import cv2 as cv
 
 import os
@@ -13,8 +14,7 @@ img = cv.imread("images/IMG_2150.jpeg")
 
 # print(streamer._img)
 # print(cv.imencode(".jpeg", img)[1].tostring())
-cv_webserver = webserver()
-cv_webserver.set_img(numpy_to_img(img))
+streamer.set_img(numpy_to_img(img))
 
 if __name__ == '__main__':
-    cv_webserver.start()
+    app.run(host='0.0.0.0',  debug=True)

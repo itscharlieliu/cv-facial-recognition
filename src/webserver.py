@@ -1,16 +1,14 @@
 import os
-import threading
 from flask import Flask, render_template, Response
 import time
 
-# TODO this doesn't work, so refactor this
-# Note: Don't use app.run()
-class webserver(threading.Thread):
-    app = Flask(__name__)
+class _Streamer:
+    _img = bytearray()
 
     def __init__(self) -> None:
-        threading.Thread.__init__(self)
-        self._img = bytearray()
+        with open("test.jpeg", "rb") as image:
+            f = image.read()
+            self._img = bytearray(f)
 
     def set_img(self, img):
         self._img = img
@@ -25,18 +23,16 @@ class webserver(threading.Thread):
             # TODO remove this delay
             time.sleep(1);
 
+streamer = _Streamer()
 
-    @app.route('/')
-    def index():
-        return render_template('index.html')
+app = Flask(__name__)
 
-    @app.route('/video_feed')
-    def video_feed(self):
-        return Response(self.generate_frame(),
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(streamer.generate_frame(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
-
-    def run(self):
-        self.app.run(host='0.0.0.0',  debug=True)
-
-
 
