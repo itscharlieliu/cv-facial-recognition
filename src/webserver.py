@@ -1,14 +1,10 @@
-import os
 from flask import Flask, render_template, Response
+from flask_sock import Sock
 import time
+
 
 class _Streamer:
     _img = bytearray()
-
-    def __init__(self) -> None:
-        with open("test.jpeg", "rb") as image:
-            f = image.read()
-            self._img = bytearray(f)
 
     def set_img(self, img):
         self._img = img
@@ -17,22 +13,39 @@ class _Streamer:
         while True:
             # Testing
 
-            yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + self._img + b'\r\n')
+            yield (
+                b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + self._img + b"\r\n"
+            )
 
             # TODO remove this delay
-            time.sleep(1);
+            time.sleep(1)
+
 
 streamer = _Streamer()
 
 app = Flask(__name__)
+sock = Sock(app)
 
-@app.route('/')
+
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
-@app.route('/video_feed')
+
+@app.route("/video_feed")
 def video_feed():
-    return Response(streamer.generate_frame(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(
+        streamer.generate_frame(), mimetype="multipart/x-mixed-replace; boundary=frame"
+    )
 
+
+# Send jpeg image via websocket
+@sock.route("/video_in")
+def echo(ws):
+    while True:
+        data = ws.receive()
+        streamer.set_img(data)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug=True)
