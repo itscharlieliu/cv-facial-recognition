@@ -3,12 +3,10 @@ import threading
 from flask import Flask, render_template, Response
 import time
 
-app = Flask(__name__)
-
-
 # TODO this doesn't work, so refactor this
 # Note: Don't use app.run()
 class webserver(threading.Thread):
+    app = Flask(__name__)
 
     def __init__(self) -> None:
         threading.Thread.__init__(self)
@@ -28,16 +26,17 @@ class webserver(threading.Thread):
             time.sleep(1);
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
-@app.route('/video_feed')
-def video_feed(self):
-    return Response(self.generate_frame(),
-                mimetype='multipart/x-mixed-replace; boundary=frame')
+    @app.route('/video_feed')
+    def video_feed(self):
+        return Response(self.generate_frame(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
-self.app.run(host='0.0.0.0',  debug=True)
+    def run(self):
+        self.app.run(host='0.0.0.0',  debug=True)
 
 
 
