@@ -12,7 +12,7 @@ class _Streamer:
     def generate_frame(self):
         while True:
             # Testing
-
+            print(f"Generating frame: {self._img}")
             yield (
                 b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + self._img + b"\r\n"
             )
@@ -44,8 +44,5 @@ def video_feed():
 def echo(ws):
     while True:
         data = ws.receive()
+        print(f"Recieved data: {data}")
         streamer.set_img(data)
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
