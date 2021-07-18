@@ -45,4 +45,4 @@ def echo(ws):
     while True:
         data = ws.receive()
         print(f"Recieved data: {data}")
-        streamer.set_img(data)
+        streamer.set_img(data.encode("utf-8"))
