@@ -5,6 +5,7 @@ import multiprocessing
 
 import os
 
+print(f"Running main app: {__name__}")
 
 if __name__ == "__main__":
     # Change working directory
@@ -17,9 +18,12 @@ if __name__ == "__main__":
     )
     cv_app = multiprocessing.Process(target=start)
 
+    print("Starting webserver...")
     webserver.start()
-    time.sleep(1)
-    cv_app.start()
+    # time.sleep(1)
 
-    webserver.join()
-    cv_app.join()
+    # print("Starting cv app")
+    # cv_app.start()
+
+    # webserver.join()
+    # cv_app.join()

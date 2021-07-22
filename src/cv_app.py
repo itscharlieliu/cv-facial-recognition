@@ -19,9 +19,13 @@ def start():
     # ws.send(b"1")
     ws.send(b"hello")
 
+    print("got here 1")
+
     time.sleep(1)
 
     ws.send(b"world")
+
+    print("got here 2")
     # ws.send(b"2")
 
     ws.close()
