@@ -10,7 +10,11 @@ print(f"Running main app: {__name__}")
 
 def test():
     print("this should only run once")
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", debug=True)  # This is causing the main process to run twice
+
+
+def test2():
+    print("this should also only run once")
 
 
 if __name__ == "__main__":
@@ -23,12 +27,12 @@ if __name__ == "__main__":
     #     target=app.run, kwargs={"host": "0.0.0.0", "debug": True}
     # )
     webserver = multiprocessing.Process(target=test)
-    cv_app = multiprocessing.Process(target=start)
+    # cv_app = multiprocessing.Process(target=start)
+    cv_app = multiprocessing.Process(target=test2)
 
     print("Starting webserver...")
-    value = webserver.start()
-
-    print(f"Got: {value}")
+    webserver.start()
+    cv_app.start()
 
     # time.sleep(1)
 
