@@ -10,7 +10,7 @@ print(f"Running main app: {__name__}")
 
 def test():
     print("this should only run once")
-    app.run(host="0.0.0.0", debug=True)  # This is causing the main process to run twice
+    app.run(host="0.0.0.0", debug=True, use_reloader=False)
 
 
 def test2():
