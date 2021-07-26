@@ -23,21 +23,14 @@ if __name__ == "__main__":
     dname = os.path.dirname(abspath)
     os.chdir(dname)
 
-    # webserver = multiprocessing.Process(
-    #     target=app.run, kwargs={"host": "0.0.0.0", "debug": True}
-    # )
-    webserver = multiprocessing.Process(target=test)
-    # cv_app = multiprocessing.Process(target=start)
-    cv_app = multiprocessing.Process(target=test2)
+    webserver = multiprocessing.Process(
+        target=app.run, kwargs={"host": "0.0.0.0", "debug": True, "use_reloader": False}
+    )
+    cv_app = multiprocessing.Process(target=start)
 
     print("Starting webserver...")
     webserver.start()
+
+    time.sleep(1)
+
     cv_app.start()
-
-    # time.sleep(1)
-
-    # print("Starting cv app")
-    # cv_app.start()
-
-    # webserver.join()
-    # cv_app.join()
