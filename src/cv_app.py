@@ -15,8 +15,10 @@ def start():
     # print(numpy_to_img(img))
     time.sleep(1)
 
-    # ws.send(b"2")
+    ws.send(b"1")
 
     ws.send(numpy_to_img(img))
+
+    ws.send(b"2")
 
     ws.close()
