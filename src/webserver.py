@@ -46,3 +46,7 @@ def echo(ws):
         data = ws.receive()
         print(f"Recieved data: {data}")
         streamer.set_img(data.encode("utf-8"))
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug=True, use_reloader=False)
