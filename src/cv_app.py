@@ -1,6 +1,7 @@
+import os
 import time
 from utils.numpy_to_img import numpy_to_img
-from websocket import create_connection
+from websocket import create_connection, enableTrace, WebSocketApp
 import cv2 as cv
 
 
@@ -18,34 +19,52 @@ def on_close(ws, close_status_code, close_msg):
 
 def on_open(ws):
     def run(*args):
-        for i in range(3):
-            time.sleep(1)
-            ws.send("Hello %d" % i)
+        ws.send("1")
+        time.sleep(1)
+        img = cv.imread("images/airplane.jpg")
+        ws.send(numpy_to_img(img))
         time.sleep(1)
         ws.close()
         print("thread terminating...")
+
+    run()
 
 
 def start():
     print("Connecting...")
 
-    # Communicate with the webserver
-    ws = create_connection(f"ws://127.0.0.1:5000/video_in")
+    enableTrace(True)
+    ws = WebSocketApp(
+        "ws://127.0.0.1:5000/video_in",
+        on_open=on_open,
+        on_message=on_message,
+        on_error=on_error,
+        on_close=on_close,
+    )
 
-    img = cv.imread("images/airplane.jpg")
+    ws.run_forever()
 
-    # print(numpy_to_img(img))
-    time.sleep(1)
+    # # Communicate with the webserver
+    # ws = create_connection(f"ws://127.0.0.1:5000/video_in")
 
-    ws.send(b"1")
+    # img = cv.imread("images/airplane.jpg")
 
-    ws.send(numpy_to_img(img))
+    # # print(numpy_to_img(img))
+    # time.sleep(1)
 
-    ws.send(b"2")
+    # ws.send(b"1")
+    # ws.send(b"2")
 
-    ws.close()
-    print("Done")
+    # ws.send(numpy_to_img(img))
+
+    # ws.close()
+    # print("Done")
 
 
 if __name__ == "__main__":
+    # Change working directory
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+
     start()
