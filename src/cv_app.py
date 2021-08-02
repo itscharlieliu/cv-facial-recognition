@@ -44,22 +44,6 @@ def start():
 
     ws.run_forever()
 
-    # # Communicate with the webserver
-    # ws = create_connection(f"ws://127.0.0.1:5000/video_in")
-
-    # img = cv.imread("images/airplane.jpg")
-
-    # # print(numpy_to_img(img))
-    # time.sleep(1)
-
-    # ws.send(b"1")
-    # ws.send(b"2")
-
-    # ws.send(numpy_to_img(img))
-
-    # ws.close()
-    # print("Done")
-
 
 if __name__ == "__main__":
     # Change working directory
