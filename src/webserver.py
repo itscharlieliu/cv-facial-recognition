@@ -42,7 +42,9 @@ def video_feed():
 # Send jpeg image via websocket
 @sock.route("/video_in")
 def echo(ws):
+    print("Opened connection")
     while True:
+        print("Listening for data...")
         data = ws.receive()
         print(f"Recieved data: {data}")
         streamer.set_img(data.encode("utf-8"))

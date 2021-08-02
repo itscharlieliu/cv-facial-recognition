@@ -19,10 +19,13 @@ def on_close(ws, close_status_code, close_msg):
 
 def on_open(ws):
     def run(*args):
-        ws.send("1")
+        ws.send("ab")
         time.sleep(1)
         img = cv.imread("images/airplane.jpg")
-        ws.send(numpy_to_img(img))
+        ws.send(numpy_to_img(img)[:20], opcode=0x2)
+        time.sleep(1)
+
+        ws.send("cd")
         time.sleep(1)
         ws.close()
         print("thread terminating...")
