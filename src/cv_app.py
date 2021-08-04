@@ -25,8 +25,8 @@ def on_open(ws):
         ws.send(numpy_to_img(img)[:20], opcode=0x2)
         time.sleep(1)
 
-        ws.send("cd")
-        time.sleep(1)
+        # ws.send("cd")
+        # time.sleep(1)
         ws.close()
         print("thread terminating...")
 

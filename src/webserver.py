@@ -12,10 +12,11 @@ class _Streamer:
     def generate_frame(self):
         while True:
             # Testing
-            print(f"Generating frame: {self._img}")
-            yield (
+            frame = (
                 b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + self._img + b"\r\n"
             )
+            print(f"Generating frame: {frame}")
+            yield (frame)
 
             # TODO remove this delay
             time.sleep(1)
@@ -47,7 +48,7 @@ def echo(ws):
         print("Listening for data...")
         data = ws.receive()
         print(f"Recieved data: {data}")
-        streamer.set_img(data.encode("utf-8"))
+        streamer.set_img(data)
 
 
 if __name__ == "__main__":
