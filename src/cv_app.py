@@ -22,7 +22,7 @@ def on_open(ws):
         ws.send("ab")
         time.sleep(1)
         img = cv.imread("images/airplane.jpg")
-        ws.send(numpy_to_img(img)[:20], opcode=0x2)
+        ws.send(numpy_to_img(img), opcode=0x2)
         time.sleep(1)
 
         # ws.send("cd")

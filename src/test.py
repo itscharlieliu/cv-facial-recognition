@@ -10,12 +10,17 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 img = cv.imread("images/airplane.jpg")
+
+print(len(img))
+
 print(numpy_to_img(img)[:30])
 
 img2 = Image.fromarray(img)
 img_byte_arr = io.BytesIO()
-img2.save(img_byte_arr, format="JPG")
 
+img2.save(img_byte_arr, format="JPEG")
+
+print(img2.size)
 
 print(img_byte_arr.getvalue()[:30])
 
