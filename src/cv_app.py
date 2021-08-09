@@ -1,12 +1,14 @@
 import os
 import time
-from utils.numpy_to_img import numpy_to_img
-from websocket import create_connection, enableTrace, WebSocketApp
+
 import cv2 as cv
+from websocket import WebSocketApp, create_connection, enableTrace
+
+from utils.numpy_to_img import numpy_to_img
 
 
 def on_message(ws, message):
-    print(message)
+    pass
 
 
 def on_error(ws, error):
@@ -23,10 +25,15 @@ def on_open(ws):
         time.sleep(1)
         img = cv.imread("images/airplane.jpg")
         ws.send(numpy_to_img(img), opcode=0x2)
+        time.sleep(10)
+
+        img = cv.imread("images/IMG_2150.jpeg")
+
+        print(img)
+
+        ws.send(numpy_to_img(img), opcode=0x2)
         time.sleep(1)
 
-        # ws.send("cd")
-        # time.sleep(1)
         ws.close()
         print("thread terminating...")
 
@@ -36,7 +43,7 @@ def on_open(ws):
 def start():
     print("Connecting...")
 
-    enableTrace(True)
+    # enableTrace(True)
     ws = WebSocketApp(
         "ws://127.0.0.1:5000/video_in",
         on_open=on_open,

@@ -15,7 +15,6 @@ class _Streamer:
             frame = (
                 b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + self._img + b"\r\n"
             )
-            print(f"Generating frame: {frame}")
             yield (frame)
 
             # TODO remove this delay
@@ -43,11 +42,8 @@ def video_feed():
 # Send jpeg image via websocket
 @sock.route("/video_in")
 def echo(ws):
-    print("Opened connection")
     while True:
-        print("Listening for data...")
         data = ws.receive()
-        print(f"Recieved data: {data}")
         streamer.set_img(data)
 
 
