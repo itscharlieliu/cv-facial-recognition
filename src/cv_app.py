@@ -1,10 +1,34 @@
 import os
 import time
+import threading
 
 import cv2 as cv
 from websocket import WebSocketApp, create_connection, enableTrace
 
 from utils.numpy_to_img import numpy_to_img
+
+
+class cvThread(threading.Thread):
+    def __init__(self, ws):
+        threading.Thread.__init__(self)
+        self.ws = ws
+
+    def run(self):
+        self.ws.send("ab")
+        time.sleep(1)
+        img = cv.imread("images/airplane.jpg")
+        self.ws.send(numpy_to_img(img), opcode=0x2)
+        time.sleep(10)
+
+        img = cv.imread("images/IMG_2150.jpeg")
+
+        print(img)
+
+        self.ws.send(numpy_to_img(img), opcode=0x2)
+        time.sleep(1)
+
+        self.ws.close()
+        print("thread terminating...")
 
 
 def on_message(ws, message):
@@ -20,24 +44,9 @@ def on_close(ws, close_status_code, close_msg):
 
 
 def on_open(ws):
-    def run(*args):
-        ws.send("ab")
-        time.sleep(1)
-        img = cv.imread("images/airplane.jpg")
-        ws.send(numpy_to_img(img), opcode=0x2)
-        time.sleep(10)
+    thread = cvThread(ws)
 
-        img = cv.imread("images/IMG_2150.jpeg")
-
-        print(img)
-
-        ws.send(numpy_to_img(img), opcode=0x2)
-        time.sleep(1)
-
-        ws.close()
-        print("thread terminating...")
-
-    run()
+    thread.start()
 
 
 def start():
