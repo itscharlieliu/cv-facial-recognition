@@ -14,17 +14,15 @@ class cvThread(threading.Thread):
         self.ws = ws
 
     def run(self):
-        self.ws.send("ab")
-        time.sleep(1)
-        img = cv.imread("images/airplane.jpg")
-        self.ws.send(numpy_to_img(img), opcode=0x2)
-        time.sleep(10)
 
-        img = cv.imread("images/IMG_2150.jpeg")
+        for i in range(30):
+            time.sleep(1)
+            img = cv.imread("images/airplane.jpg")
+            self.ws.send(numpy_to_img(img), opcode=0x2)
+            time.sleep(1)
+            img = cv.imread("images/IMG_2150.jpeg")
+            self.ws.send(numpy_to_img(img), opcode=0x2)
 
-        print(img)
-
-        self.ws.send(numpy_to_img(img), opcode=0x2)
         time.sleep(1)
 
         self.ws.close()
